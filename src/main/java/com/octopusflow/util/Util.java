@@ -28,4 +28,14 @@ public class Util {
         }
         return true;
     }
+
+    public static String getConf() {
+        String appEnv = System.getenv("APP_ENV");
+        String conf = "application.json";
+        if (appEnv != null && !appEnv.isEmpty()) {
+            conf = String.format("application-%s.json", appEnv);
+        }
+
+        return conf;
+    }
 }

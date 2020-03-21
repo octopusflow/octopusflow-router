@@ -1,0 +1,19 @@
+{
+  "http.port": 8080,
+  "task": {
+    "maxwell_key_router": {
+      "predicate_type": "MaxwellKeyPredicate",
+      "kafka": {
+        "group": "maxwell_key_router",
+        "servers": "192.168.16.1:9092"
+      },
+      "source_topics": ["maxwell"],
+      "sink_routers": {
+        "user_account": {
+          "whitelist": ["user.account"]
+        }
+      }
+    }
+  },
+  "test": "this is a test"
+}
