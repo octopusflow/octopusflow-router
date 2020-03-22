@@ -36,7 +36,8 @@ public class ConfigVerticle extends AbstractVerticle {
                 log.error(ar.toString());
             } else {
                 JsonObject config = ar.result();
-                log.info("config {}", config);
+                log.info("received config {}", config);
+                // init
                 ConfigHolder.reload(config);
             }
         });
@@ -44,7 +45,7 @@ public class ConfigVerticle extends AbstractVerticle {
         retriever.listen(change -> {
             JsonObject previous = change.getPreviousConfiguration();
             JsonObject current = change.getNewConfiguration();
-            log.info("config changed from previous {} to current {}", previous, current);
+            log.info("raw config string changed from previous {} to current {}", previous, current);
             boolean changed = ConfigHolder.reload(current);
             if (changed) {
                 vertx.eventBus().publish("config.change", current);

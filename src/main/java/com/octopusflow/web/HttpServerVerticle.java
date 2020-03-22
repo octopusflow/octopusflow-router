@@ -62,6 +62,7 @@ public class HttpServerVerticle extends AbstractVerticle {
         }
 
         JsonObject json = context.getBodyAsJson();
+        vertx.eventBus().publish("config.source", json);
         context.response()
                 .putHeader("content-type", "application/json")
                 .end(Json.encodePrettily(baseResponse));
