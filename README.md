@@ -5,5 +5,14 @@
 [3]: https://codecov.io/gh/octopusflow/octopusflow-router/branch/master/graph/badge.svg "Coverage badge"
 [4]: https://codecov.io/gh/octopusflow/octopusflow-router "Codecov Status"
 
-octopusflow router
+## Architecture
 
+![octopusflow-router-arch](doc/octopusflow-router-1.png)
+
+octopusflow-router works like a filter and router for events, MySQL dump mock is not finished yet.
+
+![octopusflow-router-detail](doc/octopusflow-router-2.png)
+
+In octopusflow-router, `vert.x-config`, `vert.x-web`, `vert.x-core` and eventbus is heavily used.
+
+![octopusflow-router-impl](doc/octopusflow-router-3.png)
