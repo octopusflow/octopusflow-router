@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ConfigVerticle extends AbstractVerticle {
 
-    private static Config config;
-
     @Override
     public void start() throws Exception {
         ConfigStoreOptions fileStore = new ConfigStoreOptions()

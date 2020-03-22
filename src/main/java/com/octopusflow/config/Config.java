@@ -20,6 +20,44 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Config {
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class TaskConf {
+        private KafkaConf kafka;
+        private List<String> sourceTopics;
+        private Map<String, RouterConf> sinkRouters;
+        // class name of kafka predicate
+        private String predicateType;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class KafkaConf {
+        // consumer group, AKA application.id in kafka stream
+        private String group;
+        // bootstrap servers
+        private String servers;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+    public static class RouterConf {
+        private List<String> whitelist;
+    }
+
     private Map<String, TaskConf> task;
 
     public String toJson() {
@@ -31,41 +69,4 @@ public class Config {
         }
         return "{}";
     }
-}
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-class TaskConf {
-    private KafkaConf kafka;
-    private List<String> sourceTopics;
-    private Map<String, RouterConf> sinkRouters;
-    // class name of kafka predicate
-    private String predicateType;
-}
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-class KafkaConf {
-    // consumer group, AKA application.id in kafka stream
-    private String group;
-    // bootstrap servers
-    private String servers;
-}
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-class RouterConf {
-    private List<String> whitelist;
 }
