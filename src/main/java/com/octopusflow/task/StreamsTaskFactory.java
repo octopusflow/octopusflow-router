@@ -54,8 +54,7 @@ public class StreamsTaskFactory {
             log.info("build kafka streams with task {}...", taskName);
             Topology topology = build(taskConf);
             log.info("topology ==>\n {}", topology.describe());
-            KafkaStreams streams = new KafkaStreams(build(taskConf), kafkaProps);
-            streams.cleanUp();
+            KafkaStreams streams = new KafkaStreams(topology, kafkaProps);
             streams.start();
             taskHolder.put(taskName, streams);
         }
@@ -68,6 +67,7 @@ public class StreamsTaskFactory {
             log.info("stop and remove kafka stream task {}...", taskName);
             taskHolder.remove(taskName);
             streams.close();
+            streams.cleanUp();
         }
     }
 
