@@ -1,11 +1,13 @@
 {
   "http.port": 8080,
+  "kafka": {
+    "servers": "192.168.16.177:9094"
+  },
   "task": {
     "maxwell_key_router": {
       "predicate_type": "MaxwellKeyPredicate",
       "kafka": {
-        "group": "maxwell_key_router",
-        "servers": "192.168.16.1:9092"
+        "group": "maxwell_key_router"
       },
       "source_topics": ["maxwell"],
       "sink_routers": {

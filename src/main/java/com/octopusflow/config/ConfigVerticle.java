@@ -37,6 +37,7 @@ public class ConfigVerticle extends AbstractVerticle {
                 log.info("received config {}", config);
                 // init
                 ConfigHolder.reload(config);
+                vertx.eventBus().publish("config.change", config);
             }
         });
 
