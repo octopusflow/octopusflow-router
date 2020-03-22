@@ -47,11 +47,15 @@ public class StreamsTaskFactory {
                 log.warn("task {} is initialized, ignore", taskName);
                 continue;
             }
-            if (taskConf == null) {
-                log.error("task config is empty");
+            if (taskConf == null || taskConf.getTaskType() == null) {
+                log.error("task config or type is empty");
                 continue;
             }
+            log.info("build kafka streams with task {}...", taskName);
+            Topology topology = build(taskConf);
+            log.info("topology ==>\n {}", topology.describe());
             KafkaStreams streams = new KafkaStreams(build(taskConf), kafkaProps);
+            streams.cleanUp();
             streams.start();
             taskHolder.put(taskName, streams);
         }
@@ -60,9 +64,10 @@ public class StreamsTaskFactory {
     public static void stop() {
         for (Map.Entry<String, KafkaStreams> entry : taskHolder.entrySet()) {
             String taskName = entry.getKey();
-            KafkaStreams streamTask = entry.getValue();
-            log.info("stop kafka stream task {}...", taskName);
-            streamTask.close();
+            KafkaStreams streams = entry.getValue();
+            log.info("stop and remove kafka stream task {}...", taskName);
+            taskHolder.remove(taskName);
+            streams.close();
         }
     }
 

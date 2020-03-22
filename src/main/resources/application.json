@@ -5,14 +5,14 @@
   },
   "task": {
     "maxwell_key_router": {
-      "predicate_type": "MaxwellKeyPredicate",
-      "kafka": {
-        "group": "maxwell_key_router"
-      },
+      "task_type": "MaxwellKeyTask",
       "source_topics": ["maxwell"],
       "sink_routers": {
-        "user_account": {
-          "whitelist": ["user.account"]
+        "octopusflow-user": {
+          "whitelist": ["user.account", "user.info"]
+        },
+        "octopusflow-nlp": {
+          "whitelist": ["nlp.ogeek-dataset"]
         }
       }
     }

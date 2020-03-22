@@ -18,12 +18,12 @@ public class MaxwellKeyTask extends AbstractTask implements StreamTask {
     @Override
     public Topology build(TaskConf taskConf) {
         List<String> sourceTopics = taskConf.getSourceTopics();
-        Map<String, RouterConf> sinkRouters = taskConf.getSinkRouters();
         StreamsBuilder builder = new StreamsBuilder();
+        KStream<JsonNode, byte[]> sourceStream = builder.stream(sourceTopics, jsonBytesConsumed);
+        Map<String, RouterConf> sinkRouters = taskConf.getSinkRouters();
         for (Map.Entry<String, RouterConf> entry : sinkRouters.entrySet()) {
             List<String> whitelist = entry.getValue().getWhitelist();
             String sinkTopic = entry.getKey();
-            KStream<JsonNode, byte[]> sourceStream = builder.stream(sourceTopics, jsonBytesConsumed);
             sourceStream.filter(new MaxwellKeyPredicate(whitelist)).to(sinkTopic, jsonBytesProduced);
         }
         return builder.build();
