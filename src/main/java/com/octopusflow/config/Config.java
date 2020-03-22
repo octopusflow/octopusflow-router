@@ -31,8 +31,8 @@ public class Config {
         private KafkaConf kafka;
         private List<String> sourceTopics;
         private Map<String, RouterConf> sinkRouters;
-        // class name of kafka predicate
-        private String predicateType;
+        // class name of StreamTask
+        private String taskType;
     }
 
     @AllArgsConstructor
@@ -58,7 +58,10 @@ public class Config {
         private List<String> whitelist;
     }
 
+    // task config
     private Map<String, TaskConf> task;
+    // global kafka config
+    private KafkaConf kafka;
 
     public String toJson() {
         ObjectMapper mapper = new ObjectMapper();
@@ -68,5 +71,33 @@ public class Config {
             System.out.println(ex.getMessage());
         }
         return "{}";
+    }
+
+    public String getAppId(String taskName) {
+        if (this.task != null && this.task.get(taskName) != null) {
+            TaskConf taskConf = this.task.get(taskName);
+            if (taskConf != null && taskConf.kafka != null && taskConf.kafka.group != null) {
+                return taskConf.kafka.group;
+            }
+            return taskName;
+        }
+        return "";
+    }
+
+    public String getBootstrapServers(String taskName) {
+        if (this.task == null || this.task.get(taskName) == null) {
+            return "";
+        }
+
+        TaskConf taskConf = this.task.get(taskName);
+        if (taskConf != null && taskConf.kafka != null && taskConf.kafka.servers != null) {
+            return taskConf.kafka.servers;
+        } else {
+            // fallback to global kafka servers
+            if (this.kafka != null && this.kafka.servers != null) {
+                return this.kafka.servers;
+            }
+        }
+        return "";
     }
 }
