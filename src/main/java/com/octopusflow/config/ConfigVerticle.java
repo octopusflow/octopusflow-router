@@ -42,13 +42,13 @@ public class ConfigVerticle extends AbstractVerticle {
         });
 
         retriever.listen(change -> {
-            // Previous configuration
             JsonObject previous = change.getPreviousConfiguration();
-            // New configuration
             JsonObject current = change.getNewConfiguration();
             log.info("config changed from previous {} to current {}", previous, current);
-            ConfigHolder.reload(current);
-            vertx.eventBus().publish("config.change", current);
+            boolean changed = ConfigHolder.reload(current);
+            if (changed) {
+                vertx.eventBus().publish("config.change", current);
+            }
         });
     }
 }
