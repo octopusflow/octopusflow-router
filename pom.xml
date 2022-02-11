@@ -11,7 +11,7 @@
 
     <properties>
         <kafkaVersion>2.4.0</kafkaVersion>
-        <vertxVersion>3.8.5</vertxVersion>
+        <vertxVersion>3.9.4</vertxVersion>
         <main.class>com.octopusflow.Main</main.class>
     </properties>
 
